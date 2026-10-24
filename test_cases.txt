@@ -1,0 +1,33 @@
+SMART BUS RESERVATION SYSTEM - TEST CASES
+Each test was run on a fresh start of main.py with scripted keyboard input
+(piped into the program) and the output was checked automatically.
+Tests run: Python 3, 25 Oct 2026. Result column = whether actual matched expected.
+
+ID     | Scenario                  | Input / action                                         | Expected result                                                            | Actual result                                                                 | Match
+TC-01  | View all routes           | Menu 1, answer n, n                                    | All five routes and seat status appear                                     | R101-R105 shown with 40/40, 36/36, 32/32, 45/45, 30/30 and status Available   | Yes
+TC-02  | Search Hyderabad          | Menu 2, "hyderabad"                                    | Routes from or to Hyderabad appear                                         | R101, R103, R105 shown; R102 and R104 not shown                               | Yes
+TC-03  | Unknown city              | Menu 2, "Atlantis"                                     | No-match message; program continues                                        | "No routes found for 'atlantis'." then menu returned and exit worked          | Yes
+TC-04  | Book two seats            | Ahmed, 24, R101, 2 seats                               | Confirmed Rs. 2,400; R101 availability drops by 2                          | Booking ID B1001, Total fare Rs. 2400, R101 showed 38/40                      | Yes
+TC-05  | Zero seats                | Ahmed, 24, R101, 0 seats                               | Rejected; no booking or seat change                                        | "seats must be a whole number greater than zero"; no bookings; R101 stayed 40/40 | Yes
+TC-06  | Too many seats            | R101, 41 seats                                         | Rejected; availability never negative                                      | "only 40 seat(s) available on R101"; no bookings; R101 stayed 40/40           | Yes
+TC-07  | Cancel confirmed booking  | Book 2 seats, cancel B1001                             | Status changes; correct seats restored                                     | "Seats restored: 2", R101 available 40, booking listed as Cancelled           | Yes
+TC-08  | Cancel same booking again | Cancel B1001 twice                                     | Rejected; no extra restoration                                             | "already cancelled"; R101 stayed 40/40 (not 42)                               | Yes
+TC-09  | Report with no bookings   | Menu 7 on a fresh start                                | Booking totals and revenue zero; route status counted                      | Total 0, Confirmed 0, Cancelled 0, Seats 0, Revenue Rs. 0, Fully booked 0     | Yes
+TC-10  | Book all seats            | R101, 40 seats                                         | Success; availability zero; Fully Booked                                   | Confirmed; R101 showed 0/40 Fully Booked; report: Fully booked routes 1       | Yes
+TC-11  | Report after cancellation | Book R101 x2 (Rs. 2,400), R102 x3 (Rs. 6,000), cancel the R101 booking, report | Total 2, Confirmed 1, Cancelled 1, Seats 3, Revenue Rs. 6,000 | Exactly those values                                                          | Yes
+TC-12  | Invalid menu option       | "abc", "99", "" (blank), "0"                           | Helpful error; back to menu                                                | Text/blank -> "Invalid input"; 99 and 0 -> "Unsupported choice"; menu repeated  | Yes
+
+EXTRA CHECKS (also run, all matched)
+X-01   Blank name rejected ("name cannot be empty")
+X-02   Age "abc" and "-5" rejected ("age must be a whole number greater than zero")
+X-03   Unknown route R999 rejected
+X-04   Cancel unknown ID B9999 -> "not found", nothing changed
+X-05   View My Bookings with no bookings -> "No bookings found."
+X-06   Schedule shows "No scheduled departures." for Mirpur Khas and Lahore
+X-07   Booking after a route is full is rejected ("only 0 seat(s)")
+X-08   Two bookings get different IDs (B1001, B1002)
+X-09   Search by route ID "r104" shows only R104
+X-10   Ctrl+Z/Ctrl+D (end of input) closes the program cleanly
+
+HOW TO RE-TEST BY HAND: run `python main.py`, follow the Input / action column,
+and write what you see in your own "Actual result" column before submitting.
